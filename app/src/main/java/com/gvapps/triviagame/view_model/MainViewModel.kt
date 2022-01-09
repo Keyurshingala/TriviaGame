@@ -2,14 +2,11 @@ package com.gvapps.triviagame.view_model
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import com.gvapps.triviagame.model.MainGame
 import com.gvapps.triviagame.repo.MainRepository
-import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.Exception
 
 class MainViewModel constructor(private val repository: MainRepository) : ViewModel() {
 
@@ -18,6 +15,7 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
     var isLoading = MutableLiveData<Boolean>()
     var isFirstTime = MutableLiveData(true)
     var showAns = MutableLiveData<Boolean>()
+    var setEnable = MutableLiveData<Boolean>()
     var givenAns = MutableLiveData<String>()
 
     fun getQuestion() {
@@ -40,5 +38,4 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
             }
         })
     }
-
 }

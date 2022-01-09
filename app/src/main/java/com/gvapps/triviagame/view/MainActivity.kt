@@ -7,6 +7,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.gvapps.triviagame.databinding.MainActivityBinding
 import com.gvapps.triviagame.repo.MainRepository
@@ -29,44 +30,53 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initui() {
-        viewModel = ViewModelProvider(this, MyViewModelFactory(MainRepository(getInstance())))[MainViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            MyViewModelFactory(MainRepository(getInstance()))
+        )[MainViewModel::class.java]
 
         observers()
         listeners()
     }
 
     private fun observers() {
-        viewModel.question.observe(this, {
-            val res = it[0]
+        viewModel.apply {
+            question.observe(this@MainActivity, {
+                val res = it[0]
 
-            binding.tvTitle.text = res.category.title
-            binding.tvQuestion.text = res.question
-        })
+                binding.tvTitle.text = res.category.title
+                binding.tvQuestion.text = res.question
+            })
 
-        viewModel.isLoading.observe(this, {
-            binding.llQ.visibility = if (it) GONE else VISIBLE
-            binding.pb.visibility = if (it) VISIBLE else GONE
+            setEnable.observe(this@MainActivity, Observer {
+                binding.btnSubmit.isEnabled = it
+            })
 
-            if (it)
-                viewModel.showAns.value = false
-        })
+            isLoading.observe(this@MainActivity, {
+                binding.llQ.visibility = if (it) GONE else VISIBLE
+                binding.pb.visibility = if (it) VISIBLE else GONE
 
-        viewModel.errorMessage.observe(this, {
-            tos(it)
-        })
+                if (it)
+                    viewModel.showAns.value = false
+            })
 
-        viewModel.isFirstTime.observe(this, {
-            if (it) viewModel.getQuestion()
-        })
+            errorMessage.observe(this@MainActivity, {
+                tos(it)
+            })
 
-        viewModel.showAns.observe(this, {
-            binding.tvAns.visibility = if (it) VISIBLE else GONE
+            isFirstTime.observe(this@MainActivity, {
+                if (it) viewModel.getQuestion()
+            })
 
-        })
+            showAns.observe(this@MainActivity, {
+                binding.tvAns.visibility = if (it) VISIBLE else GONE
 
-        viewModel.givenAns.observe(this, {
-            binding.tvAns.text = "Answer : $it"
-        })
+            })
+
+            givenAns.observe(this@MainActivity, {
+                binding.tvAns.text = "Answer : $it"
+            })
+        }
     }
 
     private fun listeners() {
@@ -78,6 +88,8 @@ class MainActivity : AppCompatActivity() {
                 tos("Empty Answer")
 
             } else {
+                viewModel.setEnable.value = false
+
                 val mainGame = viewModel.question.value!![0]
 
                 if (mainGame.answer.contains(ans, true)) {
@@ -91,6 +103,7 @@ class MainActivity : AppCompatActivity() {
 
                 Handler(Looper.getMainLooper()).postDelayed({
                     binding.etAns.setText("")
+                    viewModel.setEnable.value = true
                     viewModel.getQuestion()
                 }, 5000)
             }
