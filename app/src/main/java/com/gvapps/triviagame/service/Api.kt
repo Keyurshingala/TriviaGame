@@ -11,11 +11,13 @@ interface Api {
     @GET("random")
     fun getQuestion(): Call<MutableList<MainGame>>
 
+
+
     companion object {
 
         private var api: Api? = null
 
-        fun getInstance() : Api {
+        fun getInstance(): Api {
             if (api == null) {
                 val retrofit = Retrofit.Builder()
                     .baseUrl("https://jservice.io/api/")

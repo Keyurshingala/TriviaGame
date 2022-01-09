@@ -12,7 +12,7 @@ import retrofit2.Response
 
 class MainViewModel constructor(private val repository: MainRepository) : ViewModel() {
 
-    val question = MutableLiveData<Response<MutableList<MainGame>>>()
+    val question = MutableLiveData<MutableList<MainGame>>()
     val errorMessage = MutableLiveData<String>()
     var isLoading = MutableLiveData<Boolean>()
     var isFirstTime = MutableLiveData(true)
@@ -27,7 +27,10 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
                 isFirstTime.postValue(false)
                 isLoading.postValue(false)
 
-                question.postValue(response)
+                if (response.isSuccessful && response.body() != null)
+                    question.postValue(response.body())
+                else
+                    errorMessage.postValue("Something Went Wrong")
 
             }
 
@@ -37,6 +40,11 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
             }
         })
     }
+
+//    fun getQuestion() = liveData(Dispatchers.IO) {
+//
+//        emit(repository.getQuestion())
+//    }
 
 
 }

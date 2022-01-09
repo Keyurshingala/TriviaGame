@@ -42,16 +42,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun observers() {
         viewModel.question.observe(this, {
-            if (it.isSuccessful && it.body() != null) {
+            val res = it[0]
 
-                val res = it.body()!![0]
-
-                binding.tvTitle.text = res.category.title
-                binding.tvQuestion.text = res.question
-
-            } else {
-                tos("Something Went Wrong")
-            }
+            binding.tvTitle.text = res.category.title
+            binding.tvQuestion.text = res.question
         })
 
         viewModel.isLoading.observe(this, {
@@ -85,7 +79,7 @@ class MainActivity : AppCompatActivity() {
                 tos("Empty Answer")
 
             } else {
-                val mainGame = viewModel.question.value!!.body()!![0]
+                val mainGame = viewModel.question.value!![0]
 
                 if (mainGame.answer.contains(ans, true)) {
                     tos("correct answer")

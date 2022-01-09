@@ -13,6 +13,4 @@ class MyViewModelFactory constructor(private val repository: MainRepository): Vi
             throw IllegalArgumentException("ViewModel Not Found")
         }
     }
-
-
 }
