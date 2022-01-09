@@ -5,5 +5,5 @@ import com.gvapps.triviagame.service.Api
 
 class MainRepository constructor(private val api: Api) {
 
-    fun getAllMovies() = api.getQuestion()
+      fun getQuestion() = api.getQuestion()
 }
