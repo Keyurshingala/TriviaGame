@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 val mainGame = viewModel.question.value!!.body()!![0]
 
-                if (mainGame.answer.equals(ans, true)) {
+                if (mainGame.answer.contains(ans, true)) {
                     tos("correct answer")
                 } else {
                     tos("incorrect answer")
