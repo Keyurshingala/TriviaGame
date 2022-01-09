@@ -16,10 +16,8 @@ import com.gvapps.triviagame.view_model.MyViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
-
     private lateinit var binding: MainActivityBinding
     private lateinit var viewModel: MainViewModel
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,10 +29,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initui() {
-        viewModel = ViewModelProvider(
-            this,
-            MyViewModelFactory(MainRepository(getInstance()))
-        )[MainViewModel::class.java]
+        viewModel = ViewModelProvider(this, MyViewModelFactory(MainRepository(getInstance())))[MainViewModel::class.java]
 
         observers()
         listeners()
@@ -98,9 +93,7 @@ class MainActivity : AppCompatActivity() {
                     binding.etAns.setText("")
                     viewModel.getQuestion()
                 }, 5000)
-
             }
-
         }
     }
 

@@ -9,7 +9,7 @@ import retrofit2.http.GET
 interface Api {
 
     @GET("random")
-    fun getQuestion(): Call<MutableList<MainGame>>
+     fun getQuestion(): Call<MutableList<MainGame>>
 
 
 

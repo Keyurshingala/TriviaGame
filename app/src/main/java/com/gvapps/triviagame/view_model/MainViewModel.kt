@@ -5,10 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.gvapps.triviagame.model.MainGame
 import com.gvapps.triviagame.repo.MainRepository
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 class MainViewModel constructor(private val repository: MainRepository) : ViewModel() {
 
@@ -31,7 +32,6 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
                     question.postValue(response.body())
                 else
                     errorMessage.postValue("Something Went Wrong")
-
             }
 
             override fun onFailure(call: Call<MutableList<MainGame>>, t: Throwable) {
@@ -40,11 +40,5 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
             }
         })
     }
-
-//    fun getQuestion() = liveData(Dispatchers.IO) {
-//
-//        emit(repository.getQuestion())
-//    }
-
 
 }
