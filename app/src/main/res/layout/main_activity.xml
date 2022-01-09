@@ -61,8 +61,7 @@
                         android:gravity="center"
                         android:hint="Your Ans"
                         android:imeOptions="actionDone"
-                        android:inputType="text"
-                        android:textSize="@dimen/_16ssp" />
+                        android:inputType="text"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView

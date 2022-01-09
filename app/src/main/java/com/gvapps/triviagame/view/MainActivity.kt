@@ -49,7 +49,11 @@ class MainActivity : AppCompatActivity() {
         })
 
         viewModel.isLoading.observe(this, {
-            isLoading(it)
+            binding.llQ.visibility = if (it) GONE else VISIBLE
+            binding.pb.visibility = if (it) VISIBLE else GONE
+
+            if (it)
+                viewModel.showAns.value = false
         })
 
         viewModel.errorMessage.observe(this, {
@@ -98,16 +102,6 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
-    }
-
-
-    private fun isLoading(loading: Boolean) {
-        binding.llQ.visibility = if (loading) GONE else VISIBLE
-        binding.pb.visibility = if (loading) VISIBLE else GONE
-
-        if (loading)
-            viewModel.showAns.value = false
-
     }
 
     private fun tos(msg: String) {
