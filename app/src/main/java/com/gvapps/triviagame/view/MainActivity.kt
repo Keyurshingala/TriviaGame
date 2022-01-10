@@ -7,13 +7,14 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import com.gvapps.triviagame.databinding.MainActivityBinding
 import com.gvapps.triviagame.repo.MainRepository
 import com.gvapps.triviagame.service.Api.Companion.getInstance
 import com.gvapps.triviagame.view_model.MainViewModel
 import com.gvapps.triviagame.view_model.MyViewModelFactory
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -48,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                 binding.tvQuestion.text = res.question
             })
 
-            setEnable.observe(this@MainActivity, Observer {
+            setSubmitBtnEnable.observe(this@MainActivity, {
                 binding.btnSubmit.isEnabled = it
             })
 
@@ -61,7 +62,9 @@ class MainActivity : AppCompatActivity() {
             })
 
             errorMessage.observe(this@MainActivity, {
-                tos(it)
+                error(it)
+                (it == null)
+                binding.llQ.visibility = GONE
             })
 
             isFirstTime.observe(this@MainActivity, {
@@ -85,10 +88,10 @@ class MainActivity : AppCompatActivity() {
             val ans = binding.etAns.text.toString().trim()
 
             if (ans.isEmpty()) {
-                tos("Empty Answer")
+                tos("Enter Answer Before Submitting")
 
             } else {
-                viewModel.setEnable.value = false
+                viewModel.setSubmitBtnEnable.value = false
 
                 val mainGame = viewModel.question.value!![0]
 
@@ -103,7 +106,7 @@ class MainActivity : AppCompatActivity() {
 
                 Handler(Looper.getMainLooper()).postDelayed({
                     binding.etAns.setText("")
-                    viewModel.setEnable.value = true
+                    viewModel.setSubmitBtnEnable.value = true
                     viewModel.getQuestion()
                 }, 5000)
             }
@@ -112,5 +115,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun tos(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+    }
+
+    private fun error(msg: String) {
+
+        val snackBar = Snackbar.make(binding.getRoot(), msg, Snackbar.LENGTH_INDEFINITE)
+        snackBar.setAction("Try Again") {
+            viewModel.getQuestion()
+        }
+        snackBar.show()
     }
 }

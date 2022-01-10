@@ -1,5 +1,8 @@
 package com.gvapps.triviagame.view_model
 
+import android.content.Context
+import android.net.ConnectivityManager
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.gvapps.triviagame.model.MainGame
@@ -7,6 +10,10 @@ import com.gvapps.triviagame.repo.MainRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.ArithmeticException
+import java.lang.Exception
+import java.lang.NullPointerException
+import java.net.UnknownHostException
 
 class MainViewModel constructor(private val repository: MainRepository) : ViewModel() {
 
@@ -15,7 +22,7 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
     var isLoading = MutableLiveData<Boolean>()
     var isFirstTime = MutableLiveData(true)
     var showAns = MutableLiveData<Boolean>()
-    var setEnable = MutableLiveData<Boolean>()
+    var setSubmitBtnEnable = MutableLiveData<Boolean>()
     var givenAns = MutableLiveData<String>()
 
     fun getQuestion() {
@@ -34,8 +41,11 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
 
             override fun onFailure(call: Call<MutableList<MainGame>>, t: Throwable) {
                 isLoading.postValue(false)
-                errorMessage.postValue(t.message)
+                t.printStackTrace()
+                errorMessage.postValue(if (t is UnknownHostException) "network not available" else t.message)
             }
         })
     }
+
+
 }
