@@ -11,8 +11,6 @@ interface Api {
     @GET("random")
      fun getQuestion(): Call<MutableList<MainGame>>
 
-
-
     companion object {
 
         private var api: Api? = null

@@ -15,7 +15,6 @@ import com.gvapps.triviagame.service.Api.Companion.getInstance
 import com.gvapps.triviagame.view_model.MainViewModel
 import com.gvapps.triviagame.view_model.MyViewModelFactory
 
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: MainActivityBinding
@@ -88,7 +87,7 @@ class MainActivity : AppCompatActivity() {
             val ans = binding.etAns.text.toString().trim()
 
             if (ans.isEmpty()) {
-                tos("Enter Answer Before Submitting")
+             "Enter Answer Before Submitting".tos()
 
             } else {
                 viewModel.setSubmitBtnEnable.value = false
@@ -96,9 +95,9 @@ class MainActivity : AppCompatActivity() {
                 val mainGame = viewModel.question.value!![0]
 
                 if (mainGame.answer.contains(ans, true)) {
-                    tos("correct answer")
+                     "correct answer".tos()
                 } else {
-                    tos("incorrect answer")
+                    "incorrect answer".tos();
                 }
 
                 viewModel.showAns.value = true
@@ -113,8 +112,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun tos(msg: String) {
-        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+    private fun String.tos() {
+        Toast.makeText(this@MainActivity, this, Toast.LENGTH_LONG).show()
     }
 
     private fun error(msg: String) {
